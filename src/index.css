@@ -1,7 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -63,4 +66,21 @@ body {
 .active-navbar-link {
   color: #fff;
   font-weight: bold;
+}
+.cart-container .MuiList-root {
+  padding: 0;
+}
+
+.cart-container .MuiListItem-root {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-container .MuiListItem-root:not(:last-child) {
+  margin-bottom: 5px;
+}
+
+.cart-container .MuiListItemSecondaryAction-root {
+  right: 0;
 }

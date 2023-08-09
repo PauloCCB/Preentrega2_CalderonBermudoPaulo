@@ -1,10 +1,9 @@
-import categories from '../../mocks/categories.json';
 import { Card, CardContent, CircularProgress, Typography } from '@mui/material';
-import useMockData from '../../CustomHook/useMockData';
-import { Link } from 'react-router-dom';
+import { Link} from 'react-router-dom';
+import useFireStore from '../../CustomHook/useFireStore';
 
 const Categories = () => {
-    const { data, loading } = useMockData(categories)
+    const { data, loading } = useFireStore('categories')
 
     if (loading) return (<div className='spinner-container'><CircularProgress sx={{ color: "#FF627E" }} /></div>)
 

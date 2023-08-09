@@ -1,10 +1,13 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
 import BurguerBotton from './BurguerBotton'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { NavLink } from "react-router-dom";
 import '../../../src/index.css'
+import { CartContext } from '../Context/CartContext';
+import { Typography } from '@mui/material';
 const NavBar = () => {
+    const { cart } = useContext(CartContext)
     const [clicked, setClicked] = useState(false)
     const handleClick = () => {
         setClicked(!clicked)
@@ -17,13 +20,17 @@ const NavBar = () => {
                     <NavLink to="/" className="navbar-link" activeClassName="active-navbar-link">
                         Inicio
                     </NavLink>
-                    <NavLink  to="/products">
+                    <NavLink to="/products">
                         Productos
                     </NavLink>
                     <NavLink to="/categories">
-                    Categorias
+                        Categorias
                     </NavLink>
-                    <AddShoppingCartIcon sx={{ width: "20px", height: "20px" , color: "white"} }></AddShoppingCartIcon>
+                    <div style={{ display: "flex" }}>
+                        <AddShoppingCartIcon sx={{ width: "20px", height: "20px", color: "white" }}></AddShoppingCartIcon>
+                        <Typography component={NavLink} to='/cart'>{cart.items.length}</Typography>
+
+                    </div>
                 </div>
                 <div className='burguer'>
                     <BurguerBotton clicked={clicked} handleClick={handleClick} />
