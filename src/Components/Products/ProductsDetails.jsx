@@ -1,56 +1,51 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { Card, CardContent, Grid, ImageList, Typography, ImageListItem } from "@mui/material";
+import { Typography } from "@mui/material";
 import PaymentIcon from "@mui/icons-material/Payment";
 import { Link } from "react-router-dom";
-import ProductInfo from '../Products/Productinfo';
 import ProductsCard from '../Products/ProductsCard';
 const ProductsDetails = ({ product, children }) => {
-    const { id, images, nombre, precio, itHasDues, isAnOffer } = product;
+    const { images, nombre, precio, itHasDues } = product;
     const [isSelected, setIsSelected] = useState(false);
     const handleClick = () => {
         setIsSelected((prev) => !prev)
     }
-    return (<Grid item sx={12} sm={6} md={4} lg={3}>
-        <Card className="card-products-container" onClick={handleClick}>
-            <ImageList>
-                <ImageListItem component={Link} to={`/products/${product.id}`}>
-                    <img className="card-media" src={images} alt='200' />
-                </ImageListItem>
-            </ImageList>
-            <CardContent>
-                <Typography>{nombre}</Typography>
-                <Typography>{precio.toFixed(2)}</Typography>
-                {
-                    itHasDues && (
-                        <Typography>
-                            <PaymentIcon /> Hasta tres cuotas sin interés!
-                        </Typography>
-                    )
-                }
-
-            </CardContent>
-            
-        </Card>
-        {
-            isSelected &&
-            <ProductsCard>
-                {children}
-            </ProductsCard>
-        }
-    </Grid>);
+    return (
+        <li className=" px-0 py-0 text-center m-0 " key={product.id}>
+            <div className="" onClick={handleClick}>
+                <Link to={`/products/${product.id}`}>
+                    <img className="w-full h-auto block mb-3" src={images} alt={product.id} />
+                </Link>
+                <div>
+                    <h2 className='font-futura-medium-bt text-lg font-normal leading-5 text-#29363C pt-1 mb-8 h-[3em]'>–{nombre}</h2>
+                    <span className='decoration-black font-futura-medium-bt font-bold text-lg  '>S/. {precio.toFixed(2)}</span>
+                    {
+                        itHasDues && (
+                            <Typography>
+                                <PaymentIcon /> Hasta tres cuotas sin interés!
+                            </Typography>
+                        )
+                    }
+                </div>
+            </div>
+            {
+                isSelected &&
+                <ProductsCard>
+                    {children}
+                </ProductsCard>
+            }
+        </li>);
 }
 ProductsDetails.propTypes = {
     children: PropTypes.func.isRequired,
     product: PropTypes.shape({
         id: PropTypes.number.isRequired,
-        image: PropTypes.string.isRequired,
-        title: PropTypes.string.isRequired,
-        price: PropTypes.number.isRequired,
+        images: PropTypes.string.isRequired,
+        nombre: PropTypes.string.isRequired,
+        precio: PropTypes.number.isRequired,
         itHasDues: PropTypes.bool.isRequired,
         isAnOffer: PropTypes.bool.isRequired,
     }).isRequired
-
 }
 
 export default ProductsDetails

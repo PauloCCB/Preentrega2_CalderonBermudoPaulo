@@ -1,5 +1,5 @@
 import { Card, CardContent, CircularProgress, Typography } from '@mui/material';
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import useFireStore from '../../CustomHook/useFireStore';
 
 const Categories = () => {
@@ -24,7 +24,6 @@ const Categories = () => {
 
             </div>
         </div>
-
     </>);
 }
 

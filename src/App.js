@@ -5,12 +5,14 @@ import Products from './Components/Products/Products';
 import Categories from './Components/Categories/Categories';
 import CategoryProductList from './Components/Categories/CategoryProductList'
 import ProductCard from './Components/Products/ProductsCard';
-
+import './index.css';
 import CartForm from './Components/Checkout/Cart';
 import { CartProvider } from './Components/Context/CartContext';
+import Footer from './Components/Footer/Footer';
 
 function App() {
   return (
+
     <CartProvider>
       <Router>
         <NavBar />
@@ -23,6 +25,7 @@ function App() {
           <Route exact path='/cart' element={<CartForm></CartForm>} />
         </Routes>
       </Router>
+      <Footer></Footer>
     </CartProvider>
 
 
