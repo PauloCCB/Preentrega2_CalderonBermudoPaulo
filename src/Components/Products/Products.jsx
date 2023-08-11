@@ -1,32 +1,32 @@
-import { CircularProgress, Typography } from "@mui/material";
 import ProductDetails from "./ProductsDetails";
 import useFireStore from '../../CustomHook/useFireStore';
-import AddToCartButton from "../Common/AddToCartButton";
-
+import CategoriesColumn from "../Categories/CategoriesColumn";
 const Products = () => {
-    const { data, loading, error } = useFireStore("products");
+    const { data } = useFireStore("products");
     if (!data) {
-        // Si data es undefined, muestra un indicador de carga
         return (<>
         </>);
     }
     return (
-        <main className="mb-0  ">
-            <section className="pt-12 pb-12">
-                <div className="flex mr-auto ml-auto  max-w-4xl">
-                    {/* <ul className="  grid grid-cols-3 gap-x-8 gap-y-8 border-spacing-6 h-20 border-solid ">
-                        {
-                            data.map((product) => {
-                                return (
-                                    <ProductDetails key={product.id} product={product} className="h-96">
-                                        <AddToCartButton product={product} />
-                                    </ProductDetails>)
-                            })
-                        }
-                    </ul> */}
-                </div>
-            </section>
-        </main>
+        <section className="flex  pt-12 pb-12 relative">
+            <div className="flex m-auto relative">
+                <CategoriesColumn></CategoriesColumn>
+                <main className="w-4/5 mb-0 min-h-[100vh] ">
+                    <div className="flex mr-auto ml-auto  max-w-4xl">
+                        <ul className="grid grid-cols-3 gap-x-8 gap-y-8 border-solid border-spacing-6 ">
+                            {data.map((product) => {
+                                return (<>
+                                    <ProductDetails key={product.id} product={product}>
+                                    </ProductDetails>
+                                </>
+                                )
+                            })}
+                        </ul>
+                    </div>
+                </main>
+            </div>
+        </section>
+
     );
 }
 export default Products;

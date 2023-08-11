@@ -1,3 +1,5 @@
+const { colors } = require('@mui/material');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     content: ["./src/**/*.{js,jsx,ts,tsx}"],
@@ -23,6 +25,9 @@ module.exports = {
             },
             customHeight: {
                 '3': '3em',
+            },
+            colors: {
+                'primary': '#E4E4E457',
             }
         },
     },

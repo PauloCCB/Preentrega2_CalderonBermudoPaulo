@@ -32,7 +32,7 @@ const NavBar = () => {
     return (
         <header className={`left-0  right-0 z-50 bg-black ${scrolled ? 'fixed animate-sliding-down bg-black py-2 shadow-xl lg:py-2' : 'top-0  pt-5 lg:pt-6'}`}  >
             <section className="flex items-center justify-between px-20  py-2 ">
-                <NavLink to="/" className=" text-white" >
+                <NavLink key="/." to="/" className=" text-white" >
                     WeAre<span className="font-bold">ThePoint</span>
                 </NavLink>
                 {/* /*Desktop menu */}

@@ -5,7 +5,7 @@ import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 
 const ProductInfo = ({ product, open, setOpen, children }) => {
     const { images, description, precio, isAnOffer, itHasDues, title } = product;
-
+    console.log("Esto es product info");
     const handleClose = () => {
         setOpen(prev => !prev)
     }
