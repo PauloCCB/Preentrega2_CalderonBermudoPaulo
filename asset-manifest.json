@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/WeAreThePoint/static/css/main.ee8e5eed.css",
+    "main.js": "/WeAreThePoint/static/js/main.52870dc2.js",
+    "static/js/787.c661f67d.chunk.js": "/WeAreThePoint/static/js/787.c661f67d.chunk.js",
+    "index.html": "/WeAreThePoint/index.html",
+    "main.ee8e5eed.css.map": "/WeAreThePoint/static/css/main.ee8e5eed.css.map",
+    "main.52870dc2.js.map": "/WeAreThePoint/static/js/main.52870dc2.js.map",
+    "787.c661f67d.chunk.js.map": "/WeAreThePoint/static/js/787.c661f67d.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ee8e5eed.css",
+    "static/js/main.52870dc2.js"
+  ]
+}
