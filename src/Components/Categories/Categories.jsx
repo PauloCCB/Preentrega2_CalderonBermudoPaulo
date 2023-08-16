@@ -1,4 +1,4 @@
-import { CardContent, CircularProgress } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import { Link } from 'react-router-dom';
 import useFireStore from '../../CustomHook/useFireStore';
 import CategoriesColumn from './CategoriesColumn';
@@ -6,7 +6,8 @@ import CategoriesColumn from './CategoriesColumn';
 const Categories = () => {
     const { data, loading } = useFireStore('categories')
 
-    if (loading) return (<div className='spinner-container'><CircularProgress sx={{ color: "#FF627E" }} /></div>)
+
+    if (loading) return (<div className='flex items-center justify-center align-middle min-h-[100vh]'><CircularProgress sx={{ color: "#FF627E" }} /></div>)
     return (<>
         <div className='flex  pt-12 pb-12 ' >
             <div className="flex m-auto relative">

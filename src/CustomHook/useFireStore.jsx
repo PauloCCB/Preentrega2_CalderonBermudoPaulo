@@ -23,7 +23,7 @@ const useFireStore = (collectionMock) => {
 
         fetchData();
     }, [collectionMock]);
-
+    // loading,
     return { data, loading, error };
 }
 
