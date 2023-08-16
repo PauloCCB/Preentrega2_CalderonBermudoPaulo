@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
+import { CircularProgress } from "@mui/material";
 import PropTypes from 'prop-types'
+import useFireStore from "../../CustomHook/useFireStore";
 import { Typography } from "@mui/material";
 import PaymentIcon from "@mui/icons-material/Payment";
 import { Link } from "react-router-dom";
-import ProductsCard from '../Products/ProductsCard';
 import AddToCartButton from '../Common/AddToCartButton';
+
 const ProductsDetails = ({ product }) => {
     const { images, nombre, precio, itHasDues } = product;
     return (

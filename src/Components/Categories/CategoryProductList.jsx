@@ -8,7 +8,7 @@ import CategoriesColumn from "./CategoriesColumn";
 const CategoryProductList = () => {
     const { categoryId } = useParams();
     const { data, loading } = useFireStore('categories');
-    if (loading) return (<div className='spinner-container'><CircularProgress sx={{ color: "#FF627E" }} /></div>)
+    if (loading) return (<div className='flex items-center justify-center align-middle min-h-[100vh]'><CircularProgress sx={{ color: "#FF627E" }} /></div>)
     const category = data.filter(category => category.id === parseInt(categoryId))
     return (<section className="flex  pt-12 pb-12 relative">
         <div className="flex m-auto relative">

@@ -6,7 +6,8 @@ import CategoriesColumn from "../Categories/CategoriesColumn";
 const ProductsCard = () => {
     const { productId } = useParams();
     const { data, loading } = useFireStore('products')
-    if (loading) return <CircularProgress className='spinner-container' sx={{ color: "#4ee420" }} />
+    console.log("Esto es producto card");
+    if (loading) return <CircularProgress className='flex items-center justify-center align-middle min-h-[100vh] color:#4ee420' />
     return (
         <section className="flex  pt-12 pb-12 relative">
             <div className="flex m-auto relative">
