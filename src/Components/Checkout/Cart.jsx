@@ -1,29 +1,22 @@
 import React, { useContext, useEffect, useState } from 'react';
+import {
+    doc,
+    getFirestore,
+    updateDoc,
+} from "firebase/firestore";
 import { Typography, TextField, Button } from '@mui/material';
 import { CartContext } from '../Context/CartContext'
-
+import { app } from "../../index";
 const Cart = () => {
+    const db = getFirestore(app);
     const { cart, removeFromCart, updateBuyerInfo } = useContext(CartContext);
-
+    const itemsArray = Object.values(cart.items);
+    const [purchaseCompleted, setPurchaseCompleted] = useState(false);
     const [buyerInfo, setBuyerInfo] = useState({
         name: cart.buyer.name,
         phone: cart.buyer.phone,
         email: cart.buyer.email,
     });
-    const [total, setTotal] = useState(0);
-    useEffect(() => {
-        // Calcular el total al cargar el componente o cuando cambia el carrito
-        const calculateTotal = () => {
-            const totalPrice = cart.items.reduce((accumulator, product) => {
-                if (typeof product.precio === 'number') {
-                    return accumulator + product.precio;
-                }
-                return accumulator;
-            }, 0);
-            setTotal(totalPrice);
-        };
-        calculateTotal();
-    }, [cart.items]);
     const handleChange = (event) => {
         const { name, value } = event.target;
         setBuyerInfo((prevBuyerInfo) => ({
@@ -34,16 +27,36 @@ const Cart = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        // Actualizar la información del comprador en el contexto del carrito
-        // Esto también puede guardar la información en la base de datos si se requiere
         // Aquí solo actualizamos el estado local del contexto
         updateBuyerInfo(buyerInfo);
-        console.log();
+
+        // Actualiza la información en Firebase Firestore
+        const userId = "prueba6";
+        const cartRef = doc(db, "cart", userId);
+
+        // Actualiza el documento de Firestore con los datos actualizados
+        updateDoc(cartRef, {
+            buyer: buyerInfo,
+        })
+            .then(() => {
+                console.log("Información del comprador actualizada en Firestore");
+                setBuyerInfo({
+                    name: "",
+                    phone: "",
+                    email: "",
+                });
+                setPurchaseCompleted(true);
+            })
+
+            .catch((error) => {
+                console.error("Error al actualizar información del comprador:", error);
+            });
+
     };
     return (
-        <section className='flex  pt-12 pb-12 relative'>
+        <section className='flex  pt-12 pb-12 relative '>
             <div className=" flex m-auto min-h-[60vh]  ">
-                <form onSubmit={handleSubmit} className='flex '>
+                <form className='flex  w-1/3'>
                     <div className=' mx-auto' >
                         <Typography variant="h6">Información del comprador</Typography>
                         <TextField
@@ -70,20 +83,28 @@ const Cart = () => {
                             fullWidth
                             margin="normal"
                         />
+                        <a className='mx-auto font-futura-medium-bt bg-black text-white cursor-pointer text-lg rounded-lg' onClick={handleSubmit}>Comprar</a>
                     </div>
                 </form>
-                {cart.items.length === 0 ? (
+                {itemsArray.length === 0 || purchaseCompleted ? (
+
                     <h1 className=' justify-center  mr-auto ml-auto flex '>El carrito está vacío </h1>
                 ) : (
                     <>
-                        <div className='flex items-center  flex-col w-1/3 mb-0'>
+                        <div className='flex items-center  flex-col w-2/3 mb-0'>
                             <div className='mr-auto ml-auto'>
                                 <h1 className='font-black' >Productos en el carrito</h1>
-                                <div className=' m-0'>
-                                    {cart.items.map((product, index) => (
-                                        <div key={index} className=' border-solid border-2 border-b-slate-900 rounded-sm'>
+                                <div className=' m-0  grid grid-cols-3 gap-x-4 gap-y-4'>
+                                    {itemsArray.map((product, index) => (
+                                        <div key={index} className=' border-solid border-2 border-b-slate-900 rounded-sm  '>
+                                            <img
+                                                className="w-auto h-auto block mb-3"
+                                                src={product.images}
+                                                alt={product.id}
+                                            />
                                             <p>{product.nombre}</p>
                                             <p>Precio: ${product.precio}</p>
+                                            <p>Cantidad: {product.cantidad}</p>
                                             <button
                                                 variant="outlined"
                                                 color="secondary"
@@ -96,7 +117,7 @@ const Cart = () => {
                                     ))}
                                 </div>
 
-                                <p>Total: ${total.toFixed(2)}</p>
+                                <p>Total: ${cart.total.toFixed(2)}</p>
                             </div>
                         </div>
                     </>

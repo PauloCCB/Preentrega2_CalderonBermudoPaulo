@@ -47,7 +47,7 @@ const NavBar = () => {
                         ))}
                         <NavLink to="/cart" className="flex items-center text-white">
                             <HiOutlineShoppingCart />
-                            <span>{cart.items.length}</span>
+                            <span>{cart.items.length==0? "0":(cart.cantidadTotal || 0)}</span>
                         </NavLink>
                     </ul>
 
