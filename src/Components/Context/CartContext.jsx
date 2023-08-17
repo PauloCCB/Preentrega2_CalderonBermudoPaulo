@@ -8,7 +8,7 @@ import {
     updateDoc,
 } from "firebase/firestore";
 import { createContext, useState } from "react";
-import { app } from '../../index'
+import { app } from "../../index";
 
 export const CartContext = createContext();
 
@@ -21,58 +21,107 @@ export const CartProvider = ({ children }) => {
     });
 
     const addToCart = (product) => {
-        const userId = "prueba5";
+        const userId = "prueba6";
         const cartRef = doc(db, "cart", userId);
 
-        getDoc(cartRef).then((doc) => {
-            if (doc.exists()) {
-                const productPrice = parseFloat(product.precio);
-                const updatedTotal = cart.total + productPrice;
-                updateDoc(cartRef, {
-                    items: arrayUnion(product),
-                    total: updatedTotal,
-                })
-                    .then(() => {
-                        console.log("producto agregado al carrito");
-                        setCart((prev) => ({
-                            ...prev,
-                            items: [...prev.items, product],
+        getDoc(cartRef)
+            .then((doc) => {
+                if (doc.exists()) {
+                    const existingCartItem = doc.data().items[product.id];
+                    if (existingCartItem) {
+                        // Producto ya existe en el carrito, actualiza la cantidad y el total
+                        const updatedItems = { ...doc.data().items };
+                        updatedItems[product.id].cantidad =
+                            (updatedItems[product.id].cantidad || 0) + 1;
+
+                        const updatedTotal = cart.total + parseFloat(product.precio);
+
+                        const updatedCantidadTotal = doc.data().cantidadTotal + 1; // Incrementa la cantidadTotal
+
+                        updateDoc(cartRef, {
+                            items: updatedItems,
                             total: updatedTotal,
-                        }));
+                            cantidadTotal: updatedCantidadTotal, // Actualiza cantidadTotal
+                        })
+                            .then(() => {
+                                console.log("Cantidad de producto actualizada en el carrito");
+                                setCart((prev) => ({
+                                    ...prev,
+                                    items: updatedItems,
+                                    total: updatedTotal,
+                                    cantidadTotal: updatedCantidadTotal, // Actualiza cantidadTotal en el estado local
+                                }));
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            });
+                    } else {
+                        // Producto no existe en el carrito, agrega uno nuevo
+                        const productPrice = parseFloat(product.precio);
+                        const updatedTotal = doc.data().total + productPrice;
+
+                        const updatedCantidadTotal = doc.data().cantidadTotal + 1; // Incrementa la cantidadTotal
+                        const updatedItems = { ...doc.data().items };
+                        updatedItems[product.id] = { cantidad: 1, ...product };
+
+
+                        updateDoc(cartRef, {
+                            items: updatedItems,
+                            total: updatedTotal,
+                            cantidadTotal: updatedCantidadTotal, // Actualiza cantidadTotal
+                        })
+                            .then(() => {
+                                console.log("producto agregado al carrito");
+                                setCart((prev) => ({
+                                    ...prev,
+                                    items: updatedItems,
+                                    total: updatedTotal,
+                                    cantidadTotal: updatedCantidadTotal, // Actualiza cantidadTotal en el estado local
+                                }));
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            });
+                    }
+                } else {
+                    const productPrice = parseFloat(product.precio);
+                    const newCartItem = { cantidad: 1, ...product };
+
+                    setDoc(cartRef, {
+                        buyer: {
+                            name: "userHost",
+                            phone: 111111,
+                            email: "lalala@gmail.com",
+                        },
+                        items: {
+                            [newCartItem.id]: newCartItem,
+                        },
+                        total: productPrice,
+                        cantidadTotal: 1, // Inicializa cantidadTotal en 1
                     })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-            } else {
-                const productPrice = parseFloat(product.precio);
-                setDoc(cartRef, {
-                    buyer: {
-                        name: "userHost",
-                        phone: 111111,
-                        email: "lalala@gmail.com",
-                    },
-                    items: [product],
-                    total: productPrice,
-                })
-                    .then(() => {
-                        console.log("carrito creado");
-                        setCart({
-                            buyer: {
-                                name: "userHost",
-                                phone: 111111,
-                                email: "lalala@gmail.com",
-                            },
-                            items: [product],
-                            total: productPrice,
-                        });
-                    })
-                    .catch((error) => console.log(error));
-            }
-        })
-        .catch((error) => {
-            console.error("Error al verificar si el documento del carrito existe:", error);
-        });
+                        .then(() => {
+                            console.log("carrito creado");
+                            setCart({
+                                buyer: {
+                                    name: "userHost",
+                                    phone: 111111,
+                                    email: "lalala@gmail.com",
+                                },
+                                items: {
+                                    [newCartItem.id]: newCartItem,
+                                },
+                                total: productPrice,
+                                cantidadTotal: 1, // Inicializa cantidadTotal en 1 en el estado local
+                            });
+                        })
+                        .catch((error) => console.log(error));
+                }
+            })
+            .catch((error) => {
+                console.error("Error al verificar si el documento del carrito existe:", error);
+            });
     };
+
     const removeFromCart = (product) => {
         const userId = "prueba5"; // Reemplaza con el ID real del usuario
         const cartRef = doc(db, "cart", userId);
@@ -90,7 +139,6 @@ export const CartProvider = ({ children }) => {
                     ...prevCart,
                     items: prevCart.items.filter((item) => item.id !== product.id),
                     total: prevCart.total - product.precio,
-
                 }));
             })
             .catch((error) => {
