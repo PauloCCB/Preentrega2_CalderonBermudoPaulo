@@ -7,7 +7,9 @@ import {
 import { Typography, TextField, Button } from '@mui/material';
 import { CartContext } from '../Context/CartContext'
 import { app } from "../../index";
+import Swal from 'sweetalert2';
 const Cart = () => {
+
     const db = getFirestore(app);
     const { cart, removeFromCart, updateBuyerInfo } = useContext(CartContext);
     const itemsArray = Object.values(cart.items);
@@ -25,8 +27,21 @@ const Cart = () => {
         }));
     };
 
+    const comprar = (() => {
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Compra Realizada',
+            showConfirmButton: false,
+            timer: 1500
+        }).then(() => {
+            handleSubmit();
+        })
+        return false;
+
+    })
     const handleSubmit = (event) => {
-        event.preventDefault();
+        // event.preventDefault();
         // Aquí solo actualizamos el estado local del contexto
         updateBuyerInfo(buyerInfo);
 
@@ -83,7 +98,7 @@ const Cart = () => {
                             fullWidth
                             margin="normal"
                         />
-                        <a className='mx-auto font-futura-medium-bt bg-black text-white cursor-pointer text-lg rounded-lg' onClick={handleSubmit}>Comprar</a>
+                        <a className='mx-auto font-futura-medium-bt bg-black text-white cursor-pointer text-lg rounded-lg' onClick={comprar}>Comprar</a>
                     </div>
                 </form>
                 {itemsArray.length === 0 || purchaseCompleted ? (
